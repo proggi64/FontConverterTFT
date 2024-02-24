@@ -47,6 +47,7 @@ namespace FontConverterTFT
         {
             Console.Error.WriteLine("Using:\nFontConverterTFT /p:<path> {/f:<family>|/n:<ttf>} [/s:<size>] [/a:<style>] [/r:<first-last>]");
             Console.Error.WriteLine("Creates a GFXfont header file that can be used for Arduino IDE sketches.");
+            Console.Error.WriteLine("The name of the GFXfont header file is the name of the font + .h.");
             Console.Error.WriteLine("/p:<path>        : Folder where the resulting code file (*.h) will be stored.");
             Console.Error.WriteLine("/f:<family>      : Optional name of the installed font family to convert,");
             Console.Error.WriteLine("                   \"Monospace\", \"Serif\" or \"SansSerif\".");
@@ -139,7 +140,6 @@ namespace FontConverterTFT
                 {
                     if (!string.IsNullOrEmpty (bmFont))
                     {
-                        Using("FON file!");
                         GfxFont gfxFont = BitmapFontConverter.Convert(bmFont, last);
                         WriteGfxFont(gfxFont, path);
                         return;
