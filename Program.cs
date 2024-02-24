@@ -3,14 +3,13 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.Drawing.Text;
 using System.IO;
-using System.Security.Cryptography.X509Certificates;
 
 namespace FontConverterTFT
 {
     internal class Program
     {
         /// <summary>
-        /// Creates a png file for a singe character for testing the quality.
+        /// Creates a png file for a single character for testing the quality.
         /// </summary>
         /// <remarks>
         /// The file name is created using the character and its code, with a "Bitmap " prefix.
@@ -40,7 +39,7 @@ namespace FontConverterTFT
         }
 
         /// <summary>
-        /// Display a short documentation.
+        /// Displays a short documentation.
         /// </summary>
         /// <param name="additional">Additional text, usually for exception information.</param>
         private static void Using(string additional = null)
@@ -67,6 +66,11 @@ namespace FontConverterTFT
             }
         }
 
+        /// <summary>
+        /// Gets the <see cref="FontStyle"/> enum values from the string parameters.
+        /// </summary>
+        /// <param name="styleNames">The style names to convert to a <see cref="FontStyle"/>.</param>
+        /// <returns>A <see cref="FontStyle"/> created from the <paramref name="styleNames"/>.</returns>
         private static FontStyle GetStyles(string styleNames)
         {
             string[] names = styleNames?.Split('+');
@@ -83,6 +87,13 @@ namespace FontConverterTFT
 
         // /p:"C:\\Users\\karst\\OneDrive\\Arduino\\IBM PC mit ESP32\\ibmesp32" /n:"C:\\Users\\karst\\OneDrive\\Arduino\\IBM PC mit ESP32\\ibmesp32\\oldschool_pc_font_pack_v2.2_win\\ttf - Mx (mixed outline+bitmap)\\Mx437_IBM_BIOS.ttf" /s:9 /t:
 
+        /// <summary>
+        /// The main method of the font converter.
+        /// </summary>
+        /// <remarks>
+        /// See <see cref="Using"/> for informations about the commad line options.
+        /// </remarks>
+        /// <param name="args">See <see cref="Using"/> for informations about the commad line options.</param>
         static void Main(string[] args)
         {
             if (args.Length < 2 || args.Length > 4)
@@ -193,6 +204,14 @@ namespace FontConverterTFT
             }
         }
 
+        /// <summary>
+        /// Writes a GFX font header to the specified file path.
+        /// </summary>
+        /// <remarks>
+        /// The file name is created by using the font name of the <see cref="GfxFont"/>.
+        /// </remarks>
+        /// <param name="gfxFont">The <see cref="GfxFont"/> object to write.</param>
+        /// <param name="path">The destination folder.</param>
         private static void WriteGfxFont(GfxFont gfxFont, string path)
         {
             var code = GfxFontCodeGenerator.Create(gfxFont);
