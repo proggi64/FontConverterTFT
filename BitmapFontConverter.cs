@@ -62,8 +62,8 @@ namespace FontConverterTFT
             GfxFont gfxFont = new GfxFont();
             gfxFont.First = First;
             gfxFont.Last = (byte)last;
-            gfxFont.YAdvance = (byte)(font.height + Math.Max(font.height * 10 / 9, 1));
-            gfxFont.Name = font.facename.Replace(' ', '_');
+            gfxFont.YAdvance = (byte)(font.height + Math.Max(font.height / 10, 1));
+            gfxFont.Name = $"{font.facename.Replace(' ', '_')}_{font.width}x{font.height}";
             
             for (byte c = gfxFont.First; c < last; c++)
             {

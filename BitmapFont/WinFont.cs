@@ -186,28 +186,7 @@ namespace FontConverterTFT.BitmapFont
 
             facename = ReadString(fntBase + _fn_info.dfFace, reader);
 
-            if (_fn_info.dfVersion == DF_VER3)
-            {
-                // Will not be used, just to position the file pointer
-                FontDirEntry_v3 extras = new FontDirEntry_v3();
-                extras.Deserialize(reader);
-            }
-
             nglyphs = _fn_info.dfLastChar - _fn_info.dfFirstChar + 2;
-            if (_fn_info.dfVersion == DF_VER2)
-            {
-                // Will not be used, just to position the file pointer
-                var ct2 = new CharInfo_v2();
-                for (int i = 0; i < nglyphs; i++)
-                    ct2.Deserialize(reader);
-            }
-            else
-            {
-                // Will not be used, just to position the file pointer
-                var ct3 = new CharInfo_v3();
-                for (int i = 0; i < nglyphs; i++)
-                    ct3.Deserialize(reader);
-            }
 
             reader.BaseStream.Position = fntBase + _fn_info.dfBitsOffset;
 

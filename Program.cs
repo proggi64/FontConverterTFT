@@ -151,12 +151,14 @@ namespace FontConverterTFT
                 {
                     if (!string.IsNullOrEmpty (bmFont))
                     {
+                        // Convert a bitmap font file (FON)
                         GfxFont gfxFont = BitmapFontConverter.Convert(bmFont, last);
-                        WriteGfxFont(gfxFont, path);
+                        WriteGfxFont(gfxFont, path);    // Ready: Header has been written!
                         return;
                     }
                     else if (!string.IsNullOrEmpty (file))
                     {
+                        // Convert a TTF file
                         PrivateFontCollection collection = new PrivateFontCollection();
                         collection.AddFontFile(file);
                         font = new Font(collection.Families[0], size);
@@ -169,11 +171,13 @@ namespace FontConverterTFT
                 }
                 else
                 {
+                    // Convert an installed font
                     font = new Font(family, size, style);
                 }
 
                 using (font)
                 {
+                    // Renders each character into a device bitmap, reads the bits, and writes them into the GfxFont object
                     var gfxFont = GfxFontCreator.Create(font, ' ', last);
 
                     if (!test)
@@ -182,6 +186,7 @@ namespace FontConverterTFT
                     }
                     else
                     {
+                        // Just to visualize the resulting device bitmaps in the destination folder
                         TestCharacter(font, ' ', path);
                         TestCharacter(font, 'A', path);
                         TestCharacter(font, 'W', path);

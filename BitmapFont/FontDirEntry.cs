@@ -77,24 +77,4 @@ namespace FontConverterTFT.BitmapFont
             dfReserved = reader.ReadByte();
         }
     }
-
-    public struct FontDirEntry_v3
-    {
-        public uint dfFlags;
-        public ushort dfAspace;
-        public ushort dfBspace;
-        public ushort dfCspace;
-        public uint dfColorPointer;
-        public byte[] dfReserved1; // [16];
-
-        public void Deserialize(BinaryReader reader)
-        {
-            dfFlags = reader.ReadUInt32();
-            dfAspace = reader.ReadUInt16();
-            dfBspace = reader.ReadUInt16();
-            dfCspace = reader.ReadUInt16();
-            dfColorPointer = reader.ReadUInt32();
-            dfReserved1 = reader.ReadBytes(16);
-        }
-    }
 }

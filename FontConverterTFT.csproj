@@ -49,7 +49,6 @@
   <ItemGroup>
     <Compile Include="BitmapExtender.cs" />
     <Compile Include="BitmapFontConverter.cs" />
-    <Compile Include="BitmapFont\CharInfo.cs" />
     <Compile Include="BitmapFont\FontDirEntry.cs" />
     <Compile Include="BitmapFont\MzHeader.cs" />
     <Compile Include="BitmapFont\NeHeader.cs" />
