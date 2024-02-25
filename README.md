@@ -9,7 +9,7 @@ The converter's results are C header files as they are provided by Adafruit as G
 
 ## Usage
 
-FontConverterTFT /p:<path> {/f:<family>|/n:<ttf>} [/s:<size>] [/a:<style>] [/r:<first-last>]
+FontConverterTFT /p:\<path\> {/f:<family>|/n:\<ttf\>} [/s:\<size\>] [/a:\<style\>] [/r:\<first-last\>]
 
 Creates a GFXfont header file that can be used for Arduino IDE sketches.
 
