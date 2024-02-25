@@ -17,11 +17,11 @@ The name of the GFXfont header file is the name of the font + .h.
 
 /p:<path>        : Folder where the resulting code file (*.h) will be stored.
 
-/f:<family>      : Optional name of the installed font family to convert, "Monospace", "Serif" or "SansSerif".
+/f:<family>      : Optional name of the installed font family to convert, "Monospace", "Serif" or "SansSerif". One of the three options /f or /n or /b must be specified.
 
 /n:<ttf>         : Optional full path of the TTF font file to convert. One of the three options /f or /n or /b must be specified.
 
-/b:<fon>         : Optional full path of the FON bitmap font file to convert. One of the two options /f or /n or /b must be specified.
+/b:<fon>         : Optional full path of the FON bitmap font file to convert. One of the three options /f or /n or /b must be specified.
 
 /s:<size>        : Size in pt (Point). May be a floating point value. Default is 7.0. Ignored when converting a bitmap font (FON).
 
@@ -31,9 +31,9 @@ The name of the GFXfont header file is the name of the font + .h.
 
 ## How it works
 The converter is able to convert three different types of fonts:
-1. Installed fonts of the Windows operating system
-2. Explicitely specified TTF (TrueType Font) files
-3. Explicitely specified FON (Windows bitmap font) files with fixed character sizes
+1. Installed fonts of the Windows operating system (/f)
+2. Explicitely specified TTF (TrueType Font) files (/n)
+3. Explicitely specified FON (Windows bitmap font) files with fixed character sizes (/b)
 
 When converting TrueType fonts the size must be specified by using the /s option. The style /a option can also be used for TrueType fonts.
 
