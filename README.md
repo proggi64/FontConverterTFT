@@ -39,4 +39,4 @@ When converting TrueType fonts the size must be specified by using the /s option
 
 Each TTF font will be rendered into temporary device bitmaps. These bitmaps are transformed into byte arrays and written into the GFXfont bitmap array. The quality depends on the rendering quality of the font for the specific size. TTF fonts are usually proportional fonts, so also the resulting GFXfonts are proportional. The rendering of the TTF fonts is the reason why the program is running currently only with Windows.
 
-The FON bitmap font files are not rendered. Their bitmaps are read directly from the font resource and written into the GFXfont bitmap array. Their sizes are fixed.
+The FON bitmap font files are not rendered. Their bitmaps are read directly from the font resource, compacted and written into the GFXfont bitmap array. Their sizes (width and height) are fixed.
