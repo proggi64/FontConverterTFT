@@ -9,25 +9,25 @@ The converter's results are C header files as they are provided by Adafruit as G
 
 ## Usage
 
-FontConverterTFT /p:<path> {/f:<family>|/n:<ttf>} [/s:<size>] [/a:<style>] [/r:<first-last>]
+FontConverterTFT /p:\<path\> {/f:<family>|/n:\<ttf\>} [/s:\<size\>] [/a:\<style\>] [/r:\<first-last\>]
 
 Creates a GFXfont header file that can be used for Arduino IDE sketches.
 
 The name of the GFXfont header file is the name of the font + .h.
 
-/p:<path>        : Folder where the resulting code file (*.h) will be stored.
+/p:\<path\>        : Folder where the resulting code file (*.h) will be stored.
 
-/f:<family>      : Optional name of the installed font family to convert, "Monospace", "Serif" or "SansSerif". One of the three options /f or /n or /b must be specified.
+/f:\<family\>      : Optional name of the installed font family to convert, "Monospace", "Serif" or "SansSerif". One of the three options /f or /n or /b must be specified.
 
-/n:<ttf>         : Optional full path of the TTF font file to convert. One of the three options /f or /n or /b must be specified.
+/n:\<ttf\>         : Optional full path of the TTF font file to convert. One of the three options /f or /n or /b must be specified.
 
-/b:<fon>         : Optional full path of the FON bitmap font file to convert. One of the three options /f or /n or /b must be specified.
+/b:\<fon\>         : Optional full path of the FON bitmap font file to convert. One of the three options /f or /n or /b must be specified.
 
-/s:<size>        : Size in pt (Point). May be a floating point value. Default is 7.0. Ignored when converting a bitmap font (FON).
+/s:\<size\>        : Size in pt (Point). May be a floating point value. Default is 7.0. Ignored when converting a bitmap font (FON).
 
-/a:<style>       : Optional style (Bold, Italic, Regular, Strikeout, Underline). Combine with '+' (i.e Bold+Italic). Default is Regular.
+/a:\<style\>       : Optional style (Bold, Italic, Regular, Strikeout, Underline). Combine with '+' (i.e Bold+Italic). Default is Regular.
 
-/r:<7|8>         : Optional ASCII (7 bits) or ANSI (8 bits) range of characters.
+/r:\<7|8\>         : Optional ASCII (7 bits) or ANSI (8 bits) range of characters.
 
 ## How it works
 The converter is able to convert three different types of fonts:
