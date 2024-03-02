@@ -32,8 +32,8 @@ The name of the GFXfont header file is the name of the font + .h.
 ## How it works
 The converter is able to convert three different types of fonts:
 1. Installed fonts of the Windows operating system (/f)
-2. Explicitely specified TTF (TrueType Font) files (/n)
-3. Explicitely specified FON (Windows bitmap font) files with fixed character sizes (/b)
+2. Explicitly specified TTF (TrueType Font) files (/n)
+3. Explicitly specified FON (Windows bitmap font) files with fixed character sizes (/b)
 
 When converting TrueType fonts the size must be specified by using the /s option. The style /a option can also be used for TrueType fonts.
 
