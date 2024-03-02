@@ -161,12 +161,15 @@ namespace FontConverterTFT
                     bytes[i + j] = font.bitmap[offset + i + j];
                 }
             }
+#if DEBUG
             PrintBits(bytes, font);
-            
+#endif
+
             return bytes;
         }
 
-        
+
+#if DEBUG
         private void PrintBits(byte[] bits, WinFont font)
         {
             for (int line = 0; line < font.height; line ++)
@@ -179,6 +182,7 @@ namespace FontConverterTFT
             }
             Console.WriteLine();
         }
+#endif
 
         ushort bitmapOffset = 0;
 
