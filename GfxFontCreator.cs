@@ -133,7 +133,7 @@ namespace FontConverterTFT
         /// <summary>
         /// Creates the byte array for the specified <see cref="Bitmap"/>.
         /// </summary>
-        /// <param name="bitmap">The bitmap that reprsent a rendered font character.</param>
+        /// <param name="bitmap">The bitmap that represents a rendered font character.</param>
         /// <returns>An array of bytes. Each bit which is set is a pixel of the character,</returns>
         private byte[] CreateBytes(Bitmap bitmap)
         {

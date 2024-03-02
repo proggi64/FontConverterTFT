@@ -54,6 +54,7 @@
     <Compile Include="BitmapFont\NeHeader.cs" />
     <Compile Include="BitmapFont\ResEntry.cs" />
     <Compile Include="BitmapFont\WinFont.cs" />
+    <Compile Include="ByteArrayExtender.cs" />
     <Compile Include="CharacterRenderer.cs" />
     <Compile Include="Configuration.cs" />
     <Compile Include="Crops.cs" />

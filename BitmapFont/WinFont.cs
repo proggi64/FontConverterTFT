@@ -141,12 +141,13 @@ namespace FontConverterTFT.BitmapFont
         /// <summary>
         /// Reads the complete bitmaps of the font.
         /// </summary>
-        /// <param name="h">Height of a single character.</param>
+        /// <param name="w">Width of a single character in pixels.</param>
+        /// <param name="h">Height of a single character in pixel lines.</param>
         /// <param name="wbytes">Count of bytes of a single pixel line.</param>
         /// <param name="nglyphs">Count of glyphs in the font file.</param>
         /// <param name="reader">The <see cref="BinaryReader"/> to read from.</param>
         /// <returns>The bitmaps as byte array.</returns>
-        private byte[] ReadBitmap(int h, int wbytes, int nglyphs, BinaryReader reader)
+        private byte[] ReadBitmap(int w, int h, int wbytes, int nglyphs, BinaryReader reader)
         {
             byte[] result = new byte[wbytes * h * nglyphs];
             int dest;
@@ -194,7 +195,7 @@ namespace FontConverterTFT.BitmapFont
             height = _fn_info.dfPixHeight;
 
             wbytes = (int)Math.Ceiling(width / 8.0f);
-            bitmap = ReadBitmap(height, wbytes, nglyphs, reader);
+            bitmap = ReadBitmap(width, height, wbytes, nglyphs, reader);
 
             charset = WinFont_CharSet.WinFont_CharSetCP437;
         }

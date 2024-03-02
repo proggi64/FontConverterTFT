@@ -1,6 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
-
+using System.Linq;
 using FontConverterTFT.BitmapFont;
 
 namespace FontConverterTFT
@@ -62,17 +63,84 @@ namespace FontConverterTFT
             GfxFont gfxFont = new GfxFont();
             gfxFont.First = First;
             gfxFont.Last = (byte)last;
-            gfxFont.YAdvance = (byte)(font.height + Math.Max(font.height / 10, 1));
-            gfxFont.Name = $"{font.facename.Replace(' ', '_')}_{font.width}x{font.height}";
-            
-            for (byte c = gfxFont.First; c < last; c++)
+            gfxFont.YAdvance = (byte)font.height;
+            gfxFont.Name = $"{font.facename.Replace(' ', '_').Replace('-', '_')}_{font.width}x{font.height}";
+
+            bitmapOffset = 0;
+
+            for (ushort c = gfxFont.First; c <= last; c++)
             {
-                gfxFont.Bitmaps.Add(GetBitmap(font, c));
-                gfxFont.Glyphs.Add(GetGlyph(font, c));
+                Crops crops;
+                byte[] raw = GetBitmap(font, (byte)c).AutoCrop(out crops, font.width, font.height);
+                byte[] bytes = CreateBytes(raw, font, crops);
+                gfxFont.Bitmaps.Add(bytes);
+                gfxFont.Glyphs.Add(GetGlyph(font, (byte)c, crops, (ushort)bytes.Length));
             }
 
             return gfxFont;
         }
+
+        /// <summary>
+        /// Creates the byte array for the specified <see cref="Bitmap"/>.
+        /// </summary>
+        /// <param name="bitmap">The bitmap that represents a rendered font character.</param>
+        /// <returns>An array of bytes. Each bit which is set is a pixel of the character,</returns>
+        private byte[] CreateBytes(byte[] bitmap, WinFont font, Crops crops)
+        {
+            if (crops.Right == -1)
+                return new byte[0];
+
+            IList<byte> bytes = new List<byte>();
+
+            int width = font.width - crops.Left - crops.Right;
+            int height = font.height - crops.Top - crops.Bottom;
+            int end = width * height;
+            int sourceLineBitCounter = 0;
+            int sourceIndex = 0;
+
+            for (int i = 0; i < end; i++)
+            {
+                int destinationIndex = i / 8;
+
+                if (i % 8 == 0)
+                    bytes.Add(0);
+
+                bytes[destinationIndex] |= GetBit(bitmap[sourceIndex], i, sourceLineBitCounter);
+
+                sourceLineBitCounter++;
+
+                if (sourceLineBitCounter == width)
+                {
+                    sourceIndex++;
+                    sourceLineBitCounter = 0;
+                }
+                else if (sourceLineBitCounter > 0 &&
+                         sourceLineBitCounter % 8 == 0)
+                {
+                    sourceIndex++;
+                }
+            }
+
+            return bytes.ToArray();
+        }
+
+        // Bei 1 Pixel i, bei 10 Pixel Breite
+        /// <summary>
+        /// Get the current bit mask for the destination byte.
+        /// </summary>
+        /// <param name="bitmap">The source byte.</param>
+        /// <param name="i">The bit index of the character bitmap.</param>
+        /// <param name="sourceBitIndex">The bit index of the current byte.</param>
+        /// <returns>A <see cref="byte"/> containing the bit at the right destination position (0 or 1).</returns>
+        private byte GetBit(byte sourceByte, int i, int sourceBitIndex)
+        {
+            byte shifted = (byte)(0x80 >> i % 8);
+            byte mask = (byte)(0x80 >> sourceBitIndex);
+            bool isBitSet = (sourceByte & mask) != 0;
+            byte result = (byte)(isBitSet ? shifted : 0);
+            return result;
+        }
+
 
         /// <summary>
         /// Gets the bitmap of the specified character from the <see cref="WinFont"/>.
@@ -85,40 +153,63 @@ namespace FontConverterTFT
             int bytesPerCharacter = font.wbytes * font.height;
             int offset = (c - font._fn_info.dfFirstChar) * bytesPerCharacter;
             byte[] bytes = new byte[bytesPerCharacter];
-            //Console.WriteLine("'" + (char)c + "'");
-            for (int i = 0; i < bytesPerCharacter; i++)
+
+            for (int i = 0; i < font.height * font.wbytes; i += font.wbytes)
             {
-                bytes[i] = font.bitmap[offset + i];
-                //Console.WriteLine(ToBits(bytes[i]));
+                for (int j = 0; j < font.wbytes; j++)
+                {
+                    bytes[i + j] = font.bitmap[offset + i + j];
+                }
             }
-            //Console.WriteLine();
+            PrintBits(bytes, font);
+            
             return bytes;
         }
 
-        /*
-        private string ToBits(byte b)
+        
+        private void PrintBits(byte[] bits, WinFont font)
         {
-            return System.Convert.ToString(b, 2).PadLeft(8, '0');
-        }*/
+            for (int line = 0; line < font.height; line ++)
+            {
+                for (int b = 0; b < font.wbytes; b++)
+                {
+                    Console.Write(System.Convert.ToString(bits[line * font.wbytes + b], 2).PadLeft(8, '0').Replace('0', '.'));
+                }
+                Console.WriteLine();
+            }
+            Console.WriteLine();
+        }
+
+        ushort bitmapOffset = 0;
 
         /// <summary>
         /// Gets the glyph of the specified character from the <see cref="WinFont"/>.
         /// </summary>
         /// <param name="font">The <see cref="WinFont"/> containing the data of the bitmap font.</param>
         /// <param name="c">The code of the character to get the bitmap for.</param>
+        /// <param name="crops">A <see cref="Crops"/> instance containing the lines and columns that have
+        /// been cut off on the top, bottom, left, and right.</param>
+        /// <param name="length">Length of the bitmap array.</param>
         /// <returns>The GFX glyph.</returns>
-        private GfxGlyph GetGlyph(WinFont font, byte c)
+        private GfxGlyph GetGlyph(WinFont font, byte c, Crops crops, ushort length)
         {
+            byte width = (byte)(crops.Right == -1 ? 0 : (font.width - (crops.Left + crops.Right)));
+            byte height = (byte)(crops.Bottom == -1 ? 0 : (font.height - (crops.Top + crops.Bottom)));
+            sbyte yOffset = (sbyte)-(crops.Bottom == -1 ? 0 : font.height - crops.Top);
+
             var glyph = new GfxGlyph
             {
-                BitmapOffset = (ushort)((c - First) * font.wbytes * font.height),
+                BitmapOffset = bitmapOffset,
                 Character = (char)c,
-                Width = (byte)font.width,
-                Height = (byte)font.height,
+                Width = width,
+                Height = height,
                 XOffset = 0,
-                YOffset = (sbyte)-font.height,
+                YOffset = yOffset,
                 XAdvance = (byte)font.width
             };
+
+            bitmapOffset += length;
+
             return glyph;
         }
 

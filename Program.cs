@@ -93,9 +93,15 @@ namespace FontConverterTFT
         /// <remarks>
         /// See <see cref="Using"/> for informations about the commad line options.
         /// </remarks>
-        /// <param name="args">See <see cref="Using"/> for informations about the commad line options.</param>
+        /// <param name="args">See <see cref="Using"/> for informations about the command line options.</param>
         static void Main(string[] args)
         {
+            /*
+            byte[] source = new byte[] { 0x00, 0x00, 0x01, 0xc8, 0x00, 0x10, 0x00, 0x00 };
+            Crops crops;
+            byte[] result = source.AutoCrop(out crops, 14, 4);
+            return;*/
+
             if (args.Length < 2 || args.Length > 4)
             {
                 Using();
